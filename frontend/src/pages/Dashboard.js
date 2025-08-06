@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import TaskComments from '../components/TaskComments';
 
 export default function Dashboard() {
     const { user, setUser } = useAuth();
@@ -10,12 +11,15 @@ export default function Dashboard() {
     const [projects, setProjects] = useState([]);
     const [selectedProject, setSelectedProject] = useState(null);
     const [tasks, setTasks] = useState([]);
+    const [selectedTaskId, setSelectedTaskId] = useState(null);
 
     const [newProject, setNewProject] = useState({ name: '', description: '' });
     const [taskForm, setTaskForm] = useState({ title: '', description: '' });
 
     const [editingTaskId, setEditingTaskId] = useState(null);
     const [editTaskData, setEditTaskData] = useState({ title: '', description: '', status: 'todo' });
+
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         getProjects();
@@ -48,6 +52,7 @@ export default function Dashboard() {
     const handleProjectClick = (project) => {
         setSelectedProject(project);
         getTasks(project._id);
+        setSearchQuery('');
     };
 
     const handleProjectInput = (e) => {
@@ -87,6 +92,7 @@ export default function Dashboard() {
     const handleDeleteTask = async (id) => {
         await api.delete(`/tasks/${id}`);
         setTasks(tasks.filter((task) => task._id !== id));
+        if (selectedTaskId === id) setSelectedTaskId(null);
     };
 
     const handleEditTask = (task) => {
@@ -114,6 +120,20 @@ export default function Dashboard() {
     const handleCancelEdit = () => {
         setEditingTaskId(null);
         setEditTaskData({ title: '', description: '', status: 'todo' });
+    };
+
+    const handleSearch = async (q) => {
+        setSearchQuery(q);
+        if (!q.trim()) {
+            getTasks(selectedProject._id);
+            return;
+        }
+        try {
+            const res = await api.get(`/tasks/search/${selectedProject._id}?q=${q}`);
+            setTasks(res.data);
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     return (
@@ -185,9 +205,21 @@ export default function Dashboard() {
                         <button type="submit">Add Task</button>
                     </form>
 
+                    <input
+                        type="text"
+                        placeholder="Search tasks..."
+                        value={searchQuery}
+                        onChange={(e) => handleSearch(e.target.value)}
+                        style={{ margin: '10px 0' }}
+                    />
+
                     <ul>
                         {tasks.map((task) => (
-                            <li key={task._id} style={{ marginBottom: '10px' }}>
+                            <li
+                                key={task._id}
+                                onClick={() => setSelectedTaskId(task._id)}
+                                style={{ marginBottom: '10px', cursor: 'pointer' }}
+                            >
                                 {editingTaskId === task._id ? (
                                     <form onSubmit={handleUpdateTask}>
                                         <input
@@ -227,6 +259,8 @@ export default function Dashboard() {
                             </li>
                         ))}
                     </ul>
+
+                    {selectedTaskId && <TaskComments taskId={selectedTaskId} />}
                 </>
             )}
         </div>
