@@ -125,23 +125,38 @@ export default function Dashboard() {
   };
 
   return (
-    <div style={{ padding: '30px', maxWidth: '800px', margin: '0 auto' }}>
+    <div style={{ padding: '30px', maxWidth: '800px', margin: '0 auto', fontFamily: 'Segoe UI, sans-serif' }}>
       <h1 style={{ marginBottom: '10px' }}>Welcome, {user?.fullName}!</h1>
-      <button onClick={handleLogout}>Logout</button>
+      <button
+        style={{
+          padding: '8px 12px',
+          marginBottom: '20px',
+          backgroundColor: '#4caf50',
+          color: '#fff',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer'
+        }}
+        onClick={handleLogout}
+      >
+        Logout
+      </button>
 
-      <h2 style={{ marginTop: '30px' }}>Create New Project</h2>
+      <h2>Create New Project</h2>
       <form onSubmit={handleProjectSubmit}>
         <input
           name="name"
           placeholder="Project name"
           value={newProject.name}
           onChange={handleProjectInput}
+          style={{ padding: '8px', margin: '6px 0', width: '100%', borderRadius: '4px', border: '1px solid #ccc' }}
         />
         <input
           name="description"
           placeholder="Description"
           value={newProject.description}
           onChange={handleProjectInput}
+          style={{ padding: '8px', margin: '6px 0', width: '100%', borderRadius: '4px', border: '1px solid #ccc' }}
         />
         <button type="submit">Create Project</button>
       </form>
@@ -161,7 +176,8 @@ export default function Dashboard() {
             boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
           }}
         >
-          <strong>{project.name}</strong> <br />
+          <strong>{project.name}</strong>
+          <br />
           <small>{project.description}</small>
           <br />
           <button
@@ -185,12 +201,14 @@ export default function Dashboard() {
               placeholder="Task title"
               value={taskForm.title}
               onChange={handleTaskInput}
+              style={{ padding: '8px', margin: '6px 0', width: '100%', borderRadius: '4px', border: '1px solid #ccc' }}
             />
             <input
               name="description"
               placeholder="Task description"
               value={taskForm.description}
               onChange={handleTaskInput}
+              style={{ padding: '8px', margin: '6px 0', width: '100%', borderRadius: '4px', border: '1px solid #ccc' }}
             />
             <button type="submit">Add Task</button>
           </form>
@@ -231,16 +249,19 @@ export default function Dashboard() {
                       name="title"
                       value={editTaskData.title}
                       onChange={handleEditInput}
+                      style={{ padding: '6px', margin: '4px', width: '100%' }}
                     />
                     <input
                       name="description"
                       value={editTaskData.description}
                       onChange={handleEditInput}
+                      style={{ padding: '6px', margin: '4px', width: '100%' }}
                     />
                     <select
                       name="status"
                       value={editTaskData.status}
                       onChange={handleEditInput}
+                      style={{ padding: '6px', margin: '4px', width: '100%' }}
                     >
                       <option value="todo">Todo</option>
                       <option value="in-progress">In Progress</option>
