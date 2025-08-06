@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
+import '../styles/register.css';
 
 export default function Register() {
     const [form, setForm] = useState({
@@ -29,7 +30,7 @@ export default function Register() {
     };
 
     return (
-        <div>
+        <div className="register-container" >
             <h2>Register</h2>
             <form onSubmit={handleSubmit}>
                 <input name="fullName" placeholder="Full Name" onChange={handleChange} />
@@ -42,4 +43,3 @@ export default function Register() {
         </div>
     );
 }
-

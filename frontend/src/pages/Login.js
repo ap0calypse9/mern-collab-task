@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
+import '../styles/login.css';
 
 export default function Login() {
     const [form, setForm] = useState({ email: '', password: '' });
@@ -24,7 +25,7 @@ export default function Login() {
     };
 
     return (
-        <div>
+        <div className="login-container" >
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
                 <input name="email" type="email" placeholder="Email" onChange={handleChange} />
