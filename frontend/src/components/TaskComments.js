@@ -3,9 +3,13 @@ import io from 'socket.io-client';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 
-const socket = io( 'http://localhost:5000', {
+const socket = io(
+  process.env.REACT_APP_SERVER_URL || 'http://localhost:5000',
+  {
     withCredentials: true
-});
+  }
+);
+
 
 export default function TaskComments({ taskId }) {
     const { user } = useAuth();
